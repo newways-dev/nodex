@@ -1,8 +1,13 @@
-export default function Home() {
+import prisma from '@/lib/db'
+
+const Page = async () => {
+  const users = await prisma.user.findMany()
+
   return (
-    <div>
-      <p className="text-3xl fill-neutral-600">setup</p>
-      Page
+    <div className="min-h-screen min-w-screen flex items-center justify-center">
+      {JSON.stringify(users)}
     </div>
   )
 }
+
+export default Page
