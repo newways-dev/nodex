@@ -1,19 +1,27 @@
 import { inngest } from '@/inngest/client'
-import { createTRPCRouter, protectedProcedure } from '../init'
+import { baseProcedure, createTRPCRouter, protectedProcedure } from '../init'
 import prisma from '@/lib/db'
+
 export const appRouter = createTRPCRouter({
-  getWorkflows: protectedProcedure.query(() => {
+  testAi: baseProcedure.mutation(async () => {
+    await inngest.send({
+      name: 'execute/ai',
+    })
+
+    return { success: true, message: 'Job queued' }
+  }),
+  getWorkflows: protectedProcedure.query(({ ctx }) => {
     return prisma.workflow.findMany()
   }),
   createWorkflow: protectedProcedure.mutation(async () => {
-    const result = await inngest.send({
+    await inngest.send({
       name: 'test/hello.world',
       data: {
         email: 'kate@gmail.com',
       },
     })
 
-    return { success: true, message: 'Job queued', result }
+    return { success: true, message: 'Job queued' }
   }),
 })
 // export type definition of API
