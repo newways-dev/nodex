@@ -2,7 +2,9 @@ import { auth } from '@/lib/auth'
 import { polarClient } from '@/lib/polar'
 import { initTRPC, TRPCError } from '@trpc/server'
 import { headers } from 'next/headers'
+import superjson from 'superjson'
 import { cache } from 'react'
+
 export const createTRPCContext = cache(async () => {
   /**
    * @see: https://trpc.io/docs/server/context
@@ -17,7 +19,7 @@ const t = initTRPC.create({
   /**
    * @see https://trpc.io/docs/server/data-transformers
    */
-  // transformer: superjson,
+  transformer: superjson,
 })
 // Base router and procedure helpers
 export const createTRPCRouter = t.router
