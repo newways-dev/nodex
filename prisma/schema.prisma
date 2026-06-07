@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -14,7 +20,7 @@ model User {
   emailVerified Boolean    @default(false)
   image         String?
   createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  updatedAt     DateTime   @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
   workflows     Workflow[]
@@ -35,7 +41,6 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
-  @@index([userId])
   @@map("session")
 }
 
@@ -55,7 +60,6 @@ model Account {
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 
-  @@index([userId])
   @@map("account")
 }
 
@@ -65,9 +69,8 @@ model Verification {
   value      String
   expiresAt  DateTime
   createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  updatedAt  DateTime @default(now()) @updatedAt
 
-  @@index([identifier])
   @@map("verification")
 }
 
@@ -77,10 +80,11 @@ model Workflow {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   nodes       Node[]
   connections Connection[]
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum NodeType {
@@ -99,8 +103,8 @@ model Node {
   position Json
   data     Json     @default("{}")
 
-  inputConnections  Connection[] @relation("ToNode")
   outputConnections Connection[] @relation("FromNode")
+  inputConnections  Connection[] @relation("ToNode")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -111,13 +115,13 @@ model Connection {
   workflowId String
   workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
 
-  toNodeId   String
-  toNode     Node   @relation("ToNode", fields: [toNodeId], references: [id], onDelete: Cascade)
   fromNodeId String
   fromNode   Node   @relation("FromNode", fields: [fromNodeId], references: [id], onDelete: Cascade)
+  toNodeId   String
+  toNode     Node   @relation("ToNode", fields: [toNodeId], references: [id], onDelete: Cascade)
 
-  toInput    String @default("main")
   fromOutput String @default("main")
+  toInput    String @default("main")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
