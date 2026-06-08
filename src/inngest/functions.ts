@@ -1,9 +1,9 @@
-import prisma from '@/lib/db'
-import { inngest } from './client'
-import { NonRetriableError } from 'inngest'
-import { NodeType } from '@/generated/prisma'
 import { getExecutor } from '@/features/executions/lib/executor-registry'
+import { NodeType } from '@/generated/prisma'
+import { NonRetriableError } from 'inngest'
 import { topologicalSort } from './utils'
+import { inngest } from './client'
+import prisma from '@/lib/db'
 
 export const executeWorkflow = inngest.createFunction(
   { id: 'execute-workflow' },
