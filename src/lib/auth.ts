@@ -5,6 +5,10 @@ import { polarClient } from './polar'
 import prisma from '@/lib/db'
 
 export const auth = betterAuth({
+  trustedOrigins: [
+    'http://localhost:3000',
+    'https://grader-sapling-tutu.ngrok-free.dev',
+  ],
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
