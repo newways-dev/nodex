@@ -1,23 +1,23 @@
-import { type ReactNode } from 'react'
-import { LoaderCircle } from 'lucide-react'
+import { type ReactNode } from "react";
+import { LoaderCircle } from "lucide-react";
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
-export type NodeStatus = 'loading' | 'success' | 'error' | 'initial'
+export type NodeStatus = "loading" | "success" | "error" | "initial";
 
-export type NodeStatusVariant = 'overlay' | 'border'
+export type NodeStatusVariant = "overlay" | "border";
 
 export type NodeStatusIndicatorProps = {
-  status?: NodeStatus
-  variant?: NodeStatusVariant
-  children: ReactNode
-  className?: string
-}
+  status?: NodeStatus;
+  variant?: NodeStatusVariant;
+  children: ReactNode;
+  className?: string;
+};
 
 export const SpinnerLoadingIndicator = ({
   children,
 }: {
-  children: ReactNode
+  children: ReactNode;
 }) => {
   return (
     <div className="relative">
@@ -30,19 +30,19 @@ export const SpinnerLoadingIndicator = ({
         <LoaderCircle className="absolute left-[calc(50%-0.75rem)] top-[calc(50%-0.75rem)] size-6 animate-spin text-blue-700" />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const BorderLoadingIndicator = ({
   children,
   className,
 }: {
-  children: ReactNode
-  className?: string
+  children: ReactNode;
+  className?: string,
 }) => {
   return (
     <>
-      <div className="absolute left-[-2px] top-[-2px] h-[calc(100%+4px)] w-[calc(100%+4px)]">
+      <div className="absolute -left-[2px] -top-[2px] h-[calc(100%+4px)] w-[calc(100%+4px)]">
         <style>
           {`
         @keyframes spin {
@@ -60,73 +60,61 @@ export const BorderLoadingIndicator = ({
         }
       `}
         </style>
-        <div
-          className={cn(
-            'absolute inset-0 overflow-hidden rounded-sm',
-            className,
-          )}
-        >
-          <div className="spinner rounded-full bg-[conic-gradient(from_0deg_at_50%_50%,rgba(42,67,233,0.5)_0deg,rgba(42,138,246,0)_360deg)]" />
+        <div className={cn(
+          "absolute inset-0 overflow-hidden rounded-sm",
+          className,
+        )}>
+          <div className="spinner rounded-full bg-[conic-gradient(from_0deg_at_50%_50%,_rgba(42,67,233,0.5)_0deg,_rgba(42,138,246,0)_360deg)]" />
         </div>
       </div>
       {children}
     </>
-  )
-}
+  );
+};
 
 const StatusBorder = ({
   children,
   className,
 }: {
-  children: ReactNode
-  className?: string
+  children: ReactNode;
+  className?: string;
 }) => {
   return (
     <>
       <div
         className={cn(
-          'absolute left-[-2px] top-[-2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-md border-3',
+          "absolute -left-[2px] -top-[2px] h-[calc(100%+4px)] w-[calc(100%+4px)] rounded-md border-3",
           className,
         )}
       />
       {children}
     </>
-  )
-}
+  );
+};
 
 export const NodeStatusIndicator = ({
   status,
-  variant = 'border',
+  variant = "border",
   children,
   className,
 }: NodeStatusIndicatorProps) => {
   switch (status) {
-    case 'loading':
+    case "loading":
       switch (variant) {
-        case 'overlay':
-          return <SpinnerLoadingIndicator>{children}</SpinnerLoadingIndicator>
-        case 'border':
-          return (
-            <BorderLoadingIndicator className={className}>
-              {children}
-            </BorderLoadingIndicator>
-          )
+        case "overlay":
+          return <SpinnerLoadingIndicator>{children}</SpinnerLoadingIndicator>;
+        case "border":
+          return <BorderLoadingIndicator className={className}>{children}</BorderLoadingIndicator>;
         default:
-          return <>{children}</>
+          return <>{children}</>;
       }
-    case 'success':
+    case "success":
       return (
-        <StatusBorder className={cn('border-green-700/50', className)}>
-          {children}
-        </StatusBorder>
-      )
-    case 'error':
-      return (
-        <StatusBorder className={cn('border-red-700/50', className)}>
-          {children}
-        </StatusBorder>
-      )
+        <StatusBorder className={cn("border-green-700/50", className)}>{children}</StatusBorder>
+      );
+    case "error":
+      return <StatusBorder className={cn("border-red-700/50", className)}>{children}</StatusBorder>;
     default:
-      return <>{children}</>
+      return <>{children}</>;
   }
-}
+};

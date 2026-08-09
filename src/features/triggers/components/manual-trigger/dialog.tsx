@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   Dialog,
@@ -6,14 +6,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 
 interface Props {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
 
-export const ManualTriggerDialog = ({ open, onOpenChange }: Props) => {
+export const ManualTriggerDialog = ({
+  open,
+  onOpenChange
+}: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -30,5 +33,5 @@ export const ManualTriggerDialog = ({ open, onOpenChange }: Props) => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

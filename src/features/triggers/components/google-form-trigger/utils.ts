@@ -35,4 +35,4 @@ export const generateGoogleFormScript = (
   } catch(error) {
     console.error('Webhook failed:', error);
   }
-}`
+}`;

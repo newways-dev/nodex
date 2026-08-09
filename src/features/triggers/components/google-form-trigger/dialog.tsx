@@ -1,42 +1,45 @@
-/* eslint-disable react/no-unescaped-entities */
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { CopyIcon } from 'lucide-react'
-import { useParams } from 'next/navigation'
-import { toast } from 'sonner'
-import { generateGoogleFormScript } from './utils'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { CopyIcon } from "lucide-react";
+import { useParams } from "next/navigation";
+import { toast } from "sonner";
+import { generateGoogleFormScript } from "./utils";
 
 interface Props {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
 
-export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
-  const params = useParams()
-  const workflowId = params.workflowId as string
+export const GoogleFormTriggerDialog = ({
+  open,
+  onOpenChange
+}: Props) => {
+  const params = useParams();
+  const workflowId = params.workflowId as string;
 
   // Construct the webhook URL
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  const webhookUrl = `${baseUrl}/api/webhooks/google-form?workflowId=${workflowId}`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  const webhookUrl = 
+    `${baseUrl}/api/webhooks/google-form?workflowId=${workflowId}`;
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(webhookUrl)
-      toast.success('Webhook URL copied to clipboard')
+      await navigator.clipboard.writeText(webhookUrl);
+      toast.success("Webhook URL copied to clipboard");
     } catch {
-      toast.error('Failed to copy URL')
+      toast.error("Failed to copy URL");
     }
-  }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -50,7 +53,9 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="webhook-url">Webhook URL</Label>
+            <Label htmlFor="webhook-url">
+              Webhook URL
+            </Label>
             <div className="flex gap-2">
               <Input
                 id="webhook-url"
@@ -87,12 +92,12 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
               type="button"
               variant="outline"
               onClick={async () => {
-                const script = generateGoogleFormScript(webhookUrl)
+                const script = generateGoogleFormScript(webhookUrl);
                 try {
-                  await navigator.clipboard.writeText(script)
-                  toast.success('Script copied to clipboard')
+                  await navigator.clipboard.writeText(script);
+                  toast.success("Script copied to clipboard");
                 } catch {
-                  toast.error('Failed to copy Script to clipboard')
+                  toast.error("Failed to copy Script to clipboard");
                 }
               }}
             >
@@ -109,7 +114,7 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{googleForm.respondentEmail}}'}
+                  {"{{googleForm.respondentEmail}}"}
                 </code>
                 - Respondent's email
               </li>
@@ -121,8 +126,8 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
               </li>
               <li>
                 <code className="bg-background px-1 py-0.5 rounded">
-                  {'{{json googleForm.responses}}'}
-                </code>{' '}
+                  {"{{json googleForm.responses}}"}
+                </code>{" "}
                 - All responses as JSON
               </li>
             </ul>
@@ -130,5 +135,5 @@ export const GoogleFormTriggerDialog = ({ open, onOpenChange }: Props) => {
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

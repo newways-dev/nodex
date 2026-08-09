@@ -1,13 +1,18 @@
-'use client'
+"use client";
 
-import React, { forwardRef, type ReactNode } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
-import { BaseNode } from './base-node'
+import React, { forwardRef, type ReactNode } from "react";
+import {
+  Handle,
+  Position,
+  type NodeProps,
+} from "@xyflow/react";
+
+import { BaseNode } from "./base-node";
 
 export type PlaceholderNodeProps = Partial<NodeProps> & {
-  children?: ReactNode
-  onClick?: () => void
-}
+  children?: ReactNode;
+  onClick?: () => void;
+};
 
 export const PlaceholderNode = forwardRef<HTMLDivElement, PlaceholderNodeProps>(
   ({ children, onClick }, ref) => {
@@ -20,19 +25,19 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, PlaceholderNodeProps>(
         {children}
         <Handle
           type="target"
-          style={{ visibility: 'hidden' }}
+          style={{ visibility: "hidden" }}
           position={Position.Top}
           isConnectable={false}
         />
         <Handle
           type="source"
-          style={{ visibility: 'hidden' }}
+          style={{ visibility: "hidden" }}
           position={Position.Bottom}
           isConnectable={false}
         />
       </BaseNode>
-    )
+    );
   },
-)
+);
 
-PlaceholderNode.displayName = 'PlaceholderNode'
+PlaceholderNode.displayName = "PlaceholderNode";
