@@ -21,6 +21,7 @@ const eslintConfig = [
       "src/generated/**",
     ],
   },
+  
 ];
 
 export default eslintConfig;

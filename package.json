@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "inngest": "inngest-cli dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -37,7 +38,6 @@
     "embla-carousel-react": "^8.6.0",
     "handlebars": "^4.7.8",
     "inngest": "^3.54.0",
-    "inngest-cli": "^1.22.0",
     "input-otp": "^1.4.2",
     "jotai": "^2.20.0",
     "ky": "^1.12.0",
@@ -70,6 +70,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.4",
+    "inngest-cli": "^1.43.0",
     "prisma": "^7.8.0",
     "shadcn": "^4.8.1",
     "tailwindcss": "^4",
