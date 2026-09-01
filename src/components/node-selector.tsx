@@ -14,8 +14,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { NodeType } from '@/generated/prisma'
 import { Separator } from './ui/separator'
+import { NodeType } from '@/generated/prisma'
 
 export type NodeTypeOption = {
   type: NodeType
