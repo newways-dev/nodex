@@ -1,10 +1,10 @@
 # Nodex
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![tRPC](https://img.shields.io/badge/tRPC-11-2596BE?logo=trpc)
-![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma)
-[![Live](https://img.shields.io/badge/live-nodex--peach.vercel.app-success)](https://nodex-peach.vercel.app/login)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
+![tRPC](https://img.shields.io/badge/tRPC-11-2596BE?style=for-the-badge&logo=trpc)
+![Prisma](https://img.shields.io/badge/Prisma-7-2D3748?style=for-the-badge&logo=prisma)
+[![Live](https://img.shields.io/badge/live-nodex--peach.vercel.app-success?style=for-the-badge)](https://nodex-peach.vercel.app/login)
 
 A self-hosted workflow automation platform, in the shape of n8n or Zapier: a visual, drag-and-drop canvas for chaining triggers, AI models and messaging integrations into automations that run in the background and report their status back live.
 
