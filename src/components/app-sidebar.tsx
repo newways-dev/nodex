@@ -58,8 +58,13 @@ export const AppSidebar = () => {
       <SidebarHeader>
         <SidebarMenuItem>
           <SidebarMenuButton asChild className="gap-x-4 h-10 px-4">
-            <Link href="/" prefetch>
-              <Image src="/logos/logo.svg" alt="Nodex" width={30} height={30} />
+            <Link href="/workflows" prefetch>
+              <Image
+                src="/logos/nodex-logo.png"
+                alt="Nodex"
+                width={30}
+                height={30}
+              />
               <span className="font-semibold text-sm">Nodex</span>
             </Link>
           </SidebarMenuButton>
