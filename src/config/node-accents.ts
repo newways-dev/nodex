@@ -16,6 +16,7 @@ const accents: Partial<Record<NodeType, NodeAccent>> = {
   [NodeType.GOOGLE_FORM_TRIGGER]: trigger,
   [NodeType.STRIPE_TRIGGER]: trigger,
   [NodeType.SCHEDULE_TRIGGER]: trigger,
+  [NodeType.WEBHOOK_TRIGGER]: trigger,
   [NodeType.HTTP_REQUEST]: request,
   [NodeType.GEMINI]: ai,
   [NodeType.OPENAI]: ai,

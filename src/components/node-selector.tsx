@@ -3,7 +3,7 @@
 
 import { createId } from '@paralleldrive/cuid2'
 import { useReactFlow } from '@xyflow/react'
-import { ClockIcon, GlobeIcon, MousePointerIcon } from 'lucide-react'
+import { ClockIcon, GlobeIcon, MousePointerIcon, WebhookIcon } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -51,6 +51,12 @@ const triggerNodes: NodeTypeOption[] = [
     label: 'Schedule',
     description: 'Runs the flow on a recurring schedule',
     icon: ClockIcon,
+  },
+  {
+    type: NodeType.WEBHOOK_TRIGGER,
+    label: 'Webhook',
+    description: 'Runs the flow when an HTTP request hits a unique URL',
+    icon: WebhookIcon,
   },
 ]
 
