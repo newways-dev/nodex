@@ -10,6 +10,10 @@ import z from 'zod'
 import { PAGINATION } from '@/config/constants'
 import { NodeType } from '@/generated/prisma'
 import { sendWorkflowExecution } from '@/inngest/utils'
+import {
+  computeNextRun,
+  type ScheduleConfig,
+} from '@/features/triggers/components/schedule-trigger/schedule'
 
 export const workflowsRouter = createTRPCRouter({
   execute: protectedProcedure
@@ -117,6 +121,26 @@ export const workflowsRouter = createTRPCRouter({
           where: { id },
           data: { updatedAt: new Date() },
         })
+
+        await tx.workflowSchedule.deleteMany({ where: { workflowId: id } })
+
+        const scheduleNodes = nodes.filter(
+          (node) => node.type === NodeType.SCHEDULE_TRIGGER,
+        )
+
+        if (scheduleNodes.length > 0) {
+          const now = new Date()
+          await tx.workflowSchedule.createMany({
+            data: scheduleNodes.map((node) => ({
+              workflowId: id,
+              nodeId: node.id,
+              nextRunAt: computeNextRun(
+                (node.data || {}) as ScheduleConfig,
+                now,
+              ),
+            })),
+          })
+        }
 
         return workflow
       })

@@ -8,11 +8,14 @@ import { httpRequestChannel } from './channels/http-request'
 import { manualTriggerChannel } from './channels/manual-trigger'
 import { googleFormTriggerChannel } from './channels/google-form-trigger'
 import { stripeTriggerChannel } from './channels/stripe-trigger'
+import { scheduleTriggerChannel } from './channels/schedule-trigger'
 import { geminiChannel } from './channels/gemini'
 import { openAiChannel } from './channels/openai'
 import { anthropicChannel } from './channels/anthropic'
 import { discordChannel } from './channels/discord'
 import { slackChannel } from './channels/slack'
+import { sendWorkflowExecution } from './utils'
+import { computeNextRun, type ScheduleConfig } from '@/features/triggers/components/schedule-trigger/schedule'
 
 export const executeWorkflow = inngest.createFunction(
   {
@@ -36,6 +39,7 @@ export const executeWorkflow = inngest.createFunction(
       manualTriggerChannel(),
       googleFormTriggerChannel(),
       stripeTriggerChannel(),
+      scheduleTriggerChannel(),
       geminiChannel(),
       openAiChannel(),
       anthropicChannel(),
@@ -114,5 +118,51 @@ export const executeWorkflow = inngest.createFunction(
       workflowId,
       result: context,
     }
+  },
+)
+
+export const dispatchScheduledWorkflows = inngest.createFunction(
+  { id: 'dispatch-scheduled-workflows' },
+  { cron: '* * * * *' },
+  async ({ step }) => {
+    const due = await step.run('find-due-schedules', async () => {
+      return prisma.workflowSchedule.findMany({
+        where: { enabled: true, nextRunAt: { lte: new Date() } },
+      })
+    })
+
+    for (const schedule of due) {
+      await step.run(`dispatch-${schedule.id}`, async () => {
+        const node = await prisma.node.findUnique({
+          where: { id: schedule.nodeId },
+        })
+
+        if (!node) {
+          await prisma.workflowSchedule.delete({ where: { id: schedule.id } })
+          return
+        }
+
+        await sendWorkflowExecution({
+          workflowId: schedule.workflowId,
+          initialData: {
+            schedule: {
+              nodeId: schedule.nodeId,
+              firedAt: new Date().toISOString(),
+            },
+          },
+        })
+
+        const now = new Date()
+        await prisma.workflowSchedule.update({
+          where: { id: schedule.id },
+          data: {
+            lastRunAt: now,
+            nextRunAt: computeNextRun(node.data as ScheduleConfig, now),
+          },
+        })
+      })
+    }
+
+    return { dispatched: due.length }
   },
 )
