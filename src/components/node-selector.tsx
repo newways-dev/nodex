@@ -4,8 +4,10 @@
 import { createId } from '@paralleldrive/cuid2'
 import { useReactFlow } from '@xyflow/react'
 import { GlobeIcon, MousePointerIcon } from 'lucide-react'
-import { useCallback } from 'react'
+import { useTheme } from 'next-themes'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { resolveLogoSrc } from '@/lib/theme-logo'
 import {
   Sheet,
   SheetContent,
@@ -97,6 +99,14 @@ export function NodeSelector({
   children,
 }: NodeSelectorProps) {
   const { setNodes, getNodes, screenToFlowPosition } = useReactFlow()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isDark = mounted && resolvedTheme === 'dark'
 
   const handleNodeSelect = useCallback(
     (selection: NodeTypeOption) => {
@@ -168,7 +178,7 @@ export function NodeSelector({
                 <div className='flex items-center gap-6 w-full overflow-hidden'>
                   {typeof Icon === 'string' ? (
                     <img
-                      src={Icon}
+                      src={resolveLogoSrc(Icon, isDark)}
                       alt={nodeType.label}
                       className='size-5 object-contain rounded-sm'
                     />
@@ -202,7 +212,7 @@ export function NodeSelector({
                 <div className='flex items-center gap-6 w-full overflow-hidden'>
                   {typeof Icon === 'string' ? (
                     <img
-                      src={Icon}
+                      src={resolveLogoSrc(Icon, isDark)}
                       alt={nodeType.label}
                       className='size-5 object-contain rounded-sm'
                     />

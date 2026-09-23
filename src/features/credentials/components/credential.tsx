@@ -1,8 +1,11 @@
 "use client";
 
 import { CredentialType } from "@/generated/prisma";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { resolveLogoSrc } from "@/lib/theme-logo";
 import { 
   useCreateCredential, 
   useUpdateCredential,
@@ -80,7 +83,14 @@ export const CredentialForm = ({
   const createCredential = useCreateCredential();
   const updateCredential = useUpdateCredential();
   const { handleError, modal } = useUpgradeModal();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted && resolvedTheme === "dark";
   const isEdit = !!initialData?.id;
 
   const form = useForm<FormValues>({
@@ -163,7 +173,7 @@ export const CredentialForm = ({
                             >
                               <div className="flex items-center gap-2">
                                 <Image
-                                  src={option.logo}
+                                  src={resolveLogoSrc(option.logo, isDark)}
                                   alt={option.label}
                                   width={16}
                                   height={16}

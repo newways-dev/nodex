@@ -1,12 +1,14 @@
 "use client";
 
 import { useReactFlow, type Node, type NodeProps } from "@xyflow/react";
-import { memo, useState } from "react";
+import { useTheme } from "next-themes";
+import { memo, useEffect, useState } from "react";
 import { BaseExecutionNode } from "../base-execution-node";
 import { OpenAiDialog, OpenAiFormValues } from "./dialog";
 import { useNodeStatus } from "../../hooks/use-node-status";
 import { fetchOpenAiRealtimeToken } from "./actions";
 import { OPENAI_CHANNEL_NAME } from "@/inngest/channels/openai";
+import { resolveLogoSrc } from "@/lib/theme-logo";
 
 type OpenAiNodeData = {
   variableName?: string;
@@ -19,6 +21,12 @@ type OpenAiNodeType = Node<OpenAiNodeData>;
 export const OpenAiNode = memo((props: NodeProps<OpenAiNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const { setNodes } = useReactFlow();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
@@ -60,7 +68,7 @@ export const OpenAiNode = memo((props: NodeProps<OpenAiNodeType>) => {
       <BaseExecutionNode
         {...props}
         id={props.id}
-        icon="/logos/openai.svg"
+        icon={resolveLogoSrc("/logos/openai.svg", mounted && resolvedTheme === "dark")}
         name="OpenAi"
         status={nodeStatus}
         description={description}

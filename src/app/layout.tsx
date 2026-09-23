@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { TRPCReactProvider } from '@/trpc/client'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/theme-provider'
 
 import './globals.css'
 
@@ -28,18 +29,20 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TRPCReactProvider>
-          <NuqsAdapter>
-            <Provider>
-              {children}
-              <Toaster />
-            </Provider>
-          </NuqsAdapter>
-        </TRPCReactProvider>
+        <ThemeProvider>
+          <TRPCReactProvider>
+            <NuqsAdapter>
+              <Provider>
+                {children}
+                <Toaster />
+              </Provider>
+            </NuqsAdapter>
+          </TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
