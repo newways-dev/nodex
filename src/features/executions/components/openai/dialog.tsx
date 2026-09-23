@@ -22,10 +22,12 @@ import { Textarea } from "@/components/ui/textarea";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCredentialsByType } from "@/features/credentials/hooks/use-credentials";
 import { CredentialType } from "@/generated/prisma";
+import { resolveLogoSrc } from "@/lib/theme-logo";
 import {
   Select,
   SelectContent,
@@ -62,10 +64,16 @@ export const OpenAiDialog = ({
   onSubmit,
   defaultValues = {},
 }: Props) => {
-  const { 
+  const {
     data: credentials,
     isLoading: isLoadingCredentials,
   } = useCredentialsByType(CredentialType.OPENAI);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -158,7 +166,10 @@ export const OpenAiDialog = ({
                         >
                           <div className="flex items-center gap-2">
                             <Image
-                              src="/logos/openai.svg"
+                              src={resolveLogoSrc(
+                                "/logos/openai.svg",
+                                mounted && resolvedTheme === "dark",
+                              )}
                               alt="OpenAI"
                               width={16}
                               height={16}

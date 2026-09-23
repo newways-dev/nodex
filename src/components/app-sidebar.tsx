@@ -6,10 +6,14 @@ import {
   HistoryIcon,
   KeyIcon,
   LogOutIcon,
+  MoonIcon,
   StarIcon,
+  SunIcon,
 } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   Sidebar,
@@ -52,6 +56,12 @@ export const AppSidebar = () => {
   const router = useRouter()
   const pathname = usePathname()
   const { hasActiveSubscription, isLoading } = useHasActiveSubscription()
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Sidebar collapsible="icon">
@@ -113,6 +123,24 @@ export const AppSidebar = () => {
               </SidebarMenuButton>
             </SidebarMenuItem>
           )}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              tooltip="Toggle theme"
+              className="gap-x-4 h-10 px-4"
+              onClick={() =>
+                setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+              }
+            >
+              {mounted && resolvedTheme === 'dark' ? (
+                <SunIcon className="h-4 w-4" />
+              ) : (
+                <MoonIcon className="h-4 w-4" />
+              )}
+              <span>
+                {mounted && resolvedTheme === 'dark' ? 'Light mode' : 'Dark mode'}
+              </span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               tooltip="Billing Portal"

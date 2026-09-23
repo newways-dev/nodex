@@ -18,7 +18,10 @@ import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import type { Credential } from "@/generated/prisma";
 import { CredentialType } from "@/generated/prisma";
+import { useTheme } from "next-themes";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { resolveLogoSrc } from "@/lib/theme-logo";
 
 export const CredentialsSearch = () => {
   const [params, setParams] = useCredentialsParams();
@@ -126,12 +129,21 @@ export const CredentialItem = ({
   data: Credential
 }) => {
   const removeCredential = useRemoveCredential();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleRemove = () => {
     removeCredential.mutate({ id: data.id });
   };
 
-  const logo = credentialLogos[data.type] || "/logos/openai.svg";
+  const logo = resolveLogoSrc(
+    credentialLogos[data.type] || "/logos/openai.svg",
+    mounted && resolvedTheme === "dark",
+  );
 
   return (
     <EntityItem
