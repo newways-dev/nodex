@@ -1,6 +1,6 @@
 'use client'
 
-import { NodeToolbar, Position } from '@xyflow/react'
+import { NodeToolbar } from '@xyflow/react'
 import { SettingsIcon, TrashIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { Button } from './ui/button'
@@ -10,8 +10,6 @@ interface WorkflowNodeProps {
   showToolbar?: boolean
   onDelete?: () => void
   onSettings?: () => void
-  name?: string
-  description?: string
 }
 
 export function WorkflowNode({
@@ -19,36 +17,34 @@ export function WorkflowNode({
   showToolbar = true,
   onDelete,
   onSettings,
-  name,
-  description,
 }: WorkflowNodeProps) {
   return (
     <>
       {showToolbar && (
         <NodeToolbar>
-          <Button size="sm" variant="ghost" onClick={onSettings}>
-            <SettingsIcon className="size-4" />
-          </Button>
-          <Button size="sm" variant="ghost" onClick={onDelete}>
-            <TrashIcon className="size-4" />
-          </Button>
+          <div className='flex items-center gap-0.5 rounded-lg border bg-card p-1 shadow-md'>
+            <Button
+              size='icon'
+              variant='ghost'
+              className='size-7'
+              onClick={onSettings}
+              aria-label='Node settings'
+            >
+              <SettingsIcon className='size-3.5' />
+            </Button>
+            <Button
+              size='icon'
+              variant='ghost'
+              className='size-7 hover:text-destructive'
+              onClick={onDelete}
+              aria-label='Delete node'
+            >
+              <TrashIcon className='size-3.5' />
+            </Button>
+          </div>
         </NodeToolbar>
       )}
       {children}
-      {name && (
-        <NodeToolbar
-          position={Position.Bottom}
-          isVisible
-          className="max-w-[200px] text-center"
-        >
-          <p className="font-medium">{name}</p>
-          {description && (
-            <p className="text-muted-foreground trunacte text-sm">
-              {description}
-            </p>
-          )}
-        </NodeToolbar>
-      )}
     </>
   )
 }
