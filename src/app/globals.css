@@ -206,7 +206,43 @@
   }
 }
 
-/* React Flow node selection styles */
-.react-flow__node.selected #base-node {
-  @apply ring-3 ring-muted-foreground/25 shadow-lg;
+.react-flow {
+  --xy-background-color: var(--background);
+  --xy-background-pattern-color: color-mix(in oklab, var(--foreground) 20%, transparent);
+  --xy-edge-stroke: color-mix(in oklab, var(--foreground) 38%, transparent);
+  --xy-edge-stroke-selected: var(--primary);
+  --xy-edge-stroke-width: 2;
+  --xy-connectionline-stroke: var(--primary);
+  --xy-connectionline-stroke-width: 2;
+  --xy-minimap-background-color: var(--card);
+  --xy-minimap-mask-background-color: color-mix(in oklab, var(--background) 72%, transparent);
+  --xy-controls-button-background-color: var(--card);
+  --xy-controls-button-background-color-hover: var(--accent);
+  --xy-controls-button-color: var(--foreground);
+  --xy-controls-button-border-color: var(--border);
+  --xy-attribution-background-color: transparent;
+}
+
+.react-flow__node.selected .node-card {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 24%, transparent);
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: var(--primary);
+}
+
+.react-flow__controls {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px -6px rgb(0 0 0 / 0.35);
+}
+
+.react-flow__minimap {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px -6px rgb(0 0 0 / 0.35);
 }

@@ -12,6 +12,7 @@ import {
   type EdgeChange,
   type Connection,
   Background,
+  BackgroundVariant,
   Controls,
   MiniMap,
   Panel,
@@ -21,6 +22,7 @@ import { useSuspenseWorkflow } from '@/features/workflows/hooks/use-workflows'
 
 import { useSetAtom } from 'jotai'
 import { nodeComponents } from '@/config/node-components'
+import { accentSolid } from '@/config/node-accents'
 import { AddNodeButton } from './add-node-button'
 import { editorAtom } from '../store/atoms'
 import { NodeType } from '@/generated/prisma'
@@ -79,10 +81,17 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         panOnScroll
         panOnDrag={false}
         selectionOnDrag
+        defaultEdgeOptions={{ type: 'default' }}
       >
-        <Background />
-        <Controls />
-        <MiniMap />
+        <Background variant={BackgroundVariant.Dots} gap={22} size={1.6} />
+        <Controls showInteractive={false} />
+        <MiniMap
+          pannable
+          zoomable
+          nodeBorderRadius={6}
+          nodeStrokeWidth={0}
+          nodeColor={(node) => accentSolid(node.type)}
+        />
         <Panel position="top-right">
           <AddNodeButton />
         </Panel>
